@@ -12,9 +12,18 @@ public class AccessTokenDTO {
 	 * 需要。您从GitHub收到的GitHub应用程序的客户机密。
 	 */
 	private String client_secret;
-	private String code;//您收到的代码作为对第1步的回复。
-	private String redirect_uri;//应用程序中的URL，用于在授权后发送用户。
-	private String state;//您在步骤1中提供的不可思议的随机字符串。
+	/**
+	 * 您收到的代码作为对第1步的回复。
+	 */
+	private String code;
+	/**
+	 * 应用程序中的URL，用于在授权后发送用户。
+	 */
+	private String redirect_uri;
+	/**
+	 * 您在步骤1中提供的不可思议的随机字符串。
+	 */
+	private String state;
 
 	public void setClient_id(String client_id) {
 		this.client_id = client_id;
