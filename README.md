@@ -10,4 +10,14 @@
 [OKHttp_官网](https://square.github.io/okhttp/)      
 ## 工具
 [GitHub下载](https://git-scm.com/download)        
-[Visual-Paradigm](https://www.visual-paradigm.com)       
+[Visual-Paradigm](https://www.visual-paradigm.com)      
+
+##  说明
+1.使用技术：
+###后端 
+    Spring Boot
+    OKHttp
+    GitHub API
+###前端
+    BootStrop
+ 
