@@ -1,0 +1,1 @@
+alter table USER add bio nvarchar2(256) null ;

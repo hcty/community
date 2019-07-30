@@ -11,7 +11,7 @@
 ## 工具
 [GitHub下载](https://git-scm.com/download)        
 [Visual-Paradigm](https://www.visual-paradigm.com)      
-
+[Flyway](https://flywaydb.org/getstarted/firststeps/maven)
 ##  脚本
 ```sql
 create table USER
@@ -35,6 +35,7 @@ create table USER
     Spring Boot
     OKHttp
     GitHub API
+    FLyway  数据库管理工具(执行migration:mvn flyway:migrate)
 ###前端
     BootStrop
  

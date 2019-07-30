@@ -1,0 +1,1 @@
+alter table USER add summ nvarchar2(256) null ;
