@@ -12,6 +12,23 @@
 [GitHub下载](https://git-scm.com/download)        
 [Visual-Paradigm](https://www.visual-paradigm.com)      
 
+##  脚本
+```sql
+create table USER
+(
+	ID INTEGER auto_increment,
+	ACCOUNT_ID VARCHAR(100),
+	NAME VARCHAR(64),
+	TOKEN CHAR(36),
+	GMT_CREATE BIGINT,
+	GMT_MODIFIED BIGINT,
+	constraint USER_PK
+		primary key (ID)
+);
+
+
+```
+
 ##  说明
 1.使用技术：
 ###后端 
