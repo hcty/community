@@ -32,10 +32,10 @@ create table USER
 ##  说明
 1.使用技术：
 ###后端 
-    Spring Boot
-    OKHttp
-    GitHub API
-    FLyway  数据库管理工具(执行migration:mvn flyway:migrate)
+    Spring Boot     快速构建项目
+    OKHttp          http连接
+    GitHub API      登录授权
+    FLyway          数据库管理工具(执行migration命令  mvn flyway:migrate)
 ###前端
     BootStrop
  
