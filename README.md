@@ -14,6 +14,7 @@
 [Flyway](https://flywaydb.org/getstarted/firststeps/maven)
 ##  脚本
 ```sql
+---用户表
 create table USER
 (
 	ID INTEGER auto_increment,
@@ -25,7 +26,22 @@ create table USER
 	constraint USER_PK
 		primary key (ID)
 );
-
+---问题表
+create table question
+(
+	id int auto_increment,
+	title varchar(50),                          ---标题
+	description text,                           ---描述
+	gmt_create bigint,                          ---创建时间
+	gmt_modified bigint,                        ---修改时间
+	creator int,                                ---创建人
+	comment_count int default 0,                ---评论次数
+	view_count int default 0,                   ---查看次数
+	like_count int default 0,                   ---点赞次数
+	tag varchar(256),                           ---标签
+	constraint question_pk
+		primary key (id)
+);
 
 ```
 
