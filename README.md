@@ -8,7 +8,7 @@
 [GitHub_OAuth_api](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)        
 [BootStrop_v3文档](https://getbootstrap.com/docs/3.3/components/#navbar)  
 [OKHttp_官网](https://square.github.io/okhttp/)      
-[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html) 
 [MyBatis_Spring_Bot](http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/index.html)
 ## 工具
 [GitHub下载](https://git-scm.com/download)        
