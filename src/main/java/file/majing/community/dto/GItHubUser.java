@@ -16,5 +16,8 @@ public class GItHubUser {
 	 * GitHub用户描述
 	 */
 	private String bio;
-	private String avatar_url;
+	/**
+	 * 用户头像
+	 */
+	private String avatarUrl;
 }

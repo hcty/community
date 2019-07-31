@@ -58,7 +58,7 @@ import java.util.UUID;
 			user.setGmtCreate(System.currentTimeMillis());
 			user.setGmtModified(user.getGmtCreate());
 			user.setPortrait("");
-			user.setAvatar_url(gItHubUser.getAvatar_url());
+			user.setAvatarUrl(gItHubUser.getAvatarUrl());
 			userMapper.insert(user);
 			response.addCookie(new Cookie("token",token));
 			return "redirect:/";
