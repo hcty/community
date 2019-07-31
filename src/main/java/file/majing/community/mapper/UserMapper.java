@@ -12,8 +12,8 @@ import org.apache.ibatis.annotations.Select;
 	 *
 	 * @param user
 	 */
-	@Insert("insert into user (name,account_id,token,gmt_create,gmt_modified) values (#{name},"
-			+ "#{accountId},#{token},#{gmtCreate},#{gmtModified})") void insert(User user);
+	@Insert("insert into user (name,account_id,token,gmt_create,gmt_modified,bio,avatar_url) values (#{name},"
+			+ "#{accountId},#{token},#{gmtCreate},#{gmtModified},#{portrait},#{avatar_url})") void insert(User user);
 
 	/**
 	 * 按照token查询user

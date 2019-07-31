@@ -1,5 +1,8 @@
 package file.majing.community.dto;
 
+import lombok.Data;
+
+@Data
 public class GItHubUser {
 	/**
 	 * GitHub用户名
@@ -13,32 +16,5 @@ public class GItHubUser {
 	 * GitHub用户描述
 	 */
 	private String bio;
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getBio() {
-		return bio;
-	}
-
-	@Override public String toString() {
-		return "GItHubUser{" + "name='" + name + '\'' + ", id=" + id + ", bio='" + bio + '\'' + '}';
-	}
+	private String avatar_url;
 }
