@@ -1,7 +1,9 @@
-package file.majing.community.service;/**
+package file.majing.community.service;
+/**
  * Created by hechuan on 2019/7/31;
  */
 
+import file.majing.community.dto.PaginationDTO;
 import file.majing.community.dto.QuestionDTO;
 import file.majing.community.mapper.QuestionMapper;
 import file.majing.community.mapper.UserMapper;
@@ -21,8 +23,18 @@ import java.util.List;
 public class QuestionService {
 	@Autowired UserMapper userMapper;
 	@Autowired QuestionMapper questionMapper;
-	public List<QuestionDTO> list() {
-		List<Question> questions=questionMapper.list();
+	public PaginationDTO list(Integer page, Integer size) {
+		PaginationDTO pagination = new PaginationDTO();
+		Integer totalCount = questionMapper.count();
+		pagination.setPagination(totalCount,page,size);
+		Integer offset = size*(page-1);
+		if (page < 1) {
+			page = 1;
+		}
+		if (page > pagination.getTotalPage()) {
+			page = pagination.getTotalPage();
+		}
+		List<Question> questions=questionMapper.list(offset,size);
 		List<QuestionDTO> questionDTOS=new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO=null;
 		User user=null;
@@ -33,6 +45,7 @@ public class QuestionService {
 			questionDTO.setUser(user);
 			questionDTOS.add(questionDTO);
 		}
-		return questionDTOS;
+		pagination.setQuestions(questionDTOS);
+		return pagination;
 	}
 }

@@ -1,5 +1,6 @@
 package file.majing.community.controller;
 
+import file.majing.community.dto.PaginationDTO;
 import file.majing.community.dto.QuestionDTO;
 import file.majing.community.mapper.QuestionMapper;
 import file.majing.community.mapper.UserMapper;
@@ -19,11 +20,14 @@ import java.util.List;
 @Controller public class IndexController {
 	@Autowired private UserMapper userMapper;
 	@Autowired private QuestionService questionService;
-	@GetMapping("/") public String index(HttpServletRequest request,Model model) {
+
+	@GetMapping("/") public String index(HttpServletRequest request, Model model,
+			@RequestParam(name = "page", defaultValue = "1") Integer page,
+			@RequestParam(name = "size", defaultValue = "2") Integer size) {
 		Cookie[] cookies = request.getCookies();
-		if (null != cookies && cookies.length>0) {
+		if (null != cookies && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("token")) {
+				if ("token".equals(cookie.getName())) {
 					String token = cookie.getValue();
 					User user = userMapper.findByToken(token);
 					if (user != null) {
@@ -33,8 +37,8 @@ import java.util.List;
 				}
 			}
 		}
-		List<QuestionDTO> questions=questionService.list();
-		model.addAttribute("questions",questions);
+		PaginationDTO pagination = questionService.list(page, size);
+		model.addAttribute("pagination", pagination);
 		return "index";
 	}
 }
