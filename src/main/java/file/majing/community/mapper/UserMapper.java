@@ -17,10 +17,16 @@ import org.apache.ibatis.annotations.Select;
 
 	/**
 	 * 按照token查询user
+	 *
 	 * @param token
 	 * @return
 	 */
 	@Select("select * from user where token = #{token}") User findByToken(@Param("token") String token);
 
-	@Select("select * from user where id = #{id}")User findById(@Param("id") Integer id);
+	/**
+	 * @Author: hechuan on 2019/8/7 22:30
+	 * @param:
+	 * @return:
+	 */
+	@Select("select * from user where id = #{id}") User findById(@Param("id") Integer id);
 }

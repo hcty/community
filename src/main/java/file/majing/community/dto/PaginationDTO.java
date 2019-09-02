@@ -18,8 +18,8 @@ import java.util.List;
 	private Integer page;
 	private List<Integer> pages = new ArrayList<Integer>(7);
 	private Integer totalPage;
-	public void setPagination(Integer totalCount, Integer page, Integer size) {
-		totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
+	public void setPagination(Integer totalPage, Integer page) {
+		this.totalPage = totalPage;
 		this.page = page;
 		pages.add(page);
 		for (int i = 1; i <= 3; i++) {
