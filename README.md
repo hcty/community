@@ -9,12 +9,14 @@
 [BootStrop_v3文档](https://getbootstrap.com/docs/3.3/components/#navbar)  
 [OKHttp_官网](https://square.github.io/okhttp/)      
 [Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)    
-[MyBatis_Spring_Bot](http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/index.html)
+[MyBatis-Spring-Bot](http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/index.html)
 ## 工具
 [GitHub下载](https://git-scm.com/download)        
 [Visual-Paradigm](https://www.visual-paradigm.com)      
 [Flyway](https://flywaydb.org/getstarted/firststeps/maven)
-[Lombok](https://www.projectlombok.org/)
+[Lombok](https://www.projectlombok.org/)    
+[MyBatis Generator](http://www.mybatis.org/generator/)
+
 ##  脚本
 ```sql
 ---用户表
@@ -58,3 +60,6 @@ create table question
 #### 前端
     BootStrop
  
+## Bash
+    FlyWay          mvn flyway:migrate
+    MBG             mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate

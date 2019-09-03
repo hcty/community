@@ -8,7 +8,9 @@ import file.majing.community.dto.QuestionDTO;
 import file.majing.community.mapper.QuestionMapper;
 import file.majing.community.mapper.UserMapper;
 import file.majing.community.model.Question;
+import file.majing.community.model.QuestionExample;
 import file.majing.community.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,8 @@ import java.util.List;
 	 */
 	public PaginationDTO list(Integer page, Integer size) {
 		PaginationDTO pagination = new PaginationDTO();
-		Integer totalCount = questionMapper.count();
+		QuestionExample questionExample=new QuestionExample();
+		Integer totalCount = (int)questionMapper.countByExample(questionExample);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
 		Integer offset = size * (page - 1);
 		if (page < 1) {
@@ -37,12 +40,13 @@ import java.util.List;
 			page = totalPage;
 		}
 		pagination.setPagination(totalPage, page);
-		List<Question> questions = questionMapper.list(offset, size);
+		questionExample.setOrderByClause("GMT_MODIFIED");
+		List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample,new RowBounds(offset,size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO = null;
 		User user = null;
 		for (Question question : questions) {
-			user = userMapper.findById(question.getCreator());
+			user = userMapper.selectByPrimaryKey(question.getCreator());
 			questionDTO = new QuestionDTO();
 			BeanUtils.copyProperties(question, questionDTO);
 			questionDTO.setUser(user);
@@ -54,7 +58,9 @@ import java.util.List;
 
 	public PaginationDTO list(Integer userId, Integer page, Integer size) {
 		PaginationDTO pagination = new PaginationDTO();
-		Integer totalCount = questionMapper.countByUserId(userId);
+		QuestionExample questionExample=new QuestionExample();
+		questionExample.createCriteria().andCreatorEqualTo(userId);
+		Integer totalCount = (int)questionMapper.countByExample(questionExample);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
 		Integer offset = size * (page - 1);
 		if (page < 1) {
@@ -64,12 +70,13 @@ import java.util.List;
 			page = totalPage;
 		}
 		pagination.setPagination(totalPage, page);
-		List<Question> questions = questionMapper.listByUserId(userId, offset, size);
+		questionExample.setOrderByClause("GMT_MODIFIED");
+		List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset,size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO = null;
 		User user = null;
 		for (Question question : questions) {
-			user = userMapper.findById(question.getCreator());
+			user = userMapper.selectByPrimaryKey(question.getCreator());
 			questionDTO = new QuestionDTO();
 			BeanUtils.copyProperties(question, questionDTO);
 			questionDTO.setUser(user);
@@ -77,5 +84,34 @@ import java.util.List;
 		}
 		pagination.setQuestions(questionDTOS);
 		return pagination;
+	}
+
+	public QuestionDTO getById(Integer id) {
+		Question question = questionMapper.selectByPrimaryKey(id);
+		User user = userMapper.selectByPrimaryKey(question.getCreator());
+		QuestionDTO questionDTO = new QuestionDTO();
+		BeanUtils.copyProperties(question, questionDTO);
+		questionDTO.setUser(user);
+		return questionDTO;
+	}
+
+	/**
+	 * 创建或者更新问题
+	 *
+	 * @Author: hechuan on 2019/9/3 21:20
+	 * @param:
+	 * @return:
+	 */
+	public void createOrUpdate(Question question) {
+		if (question.getId() == null) {
+			question.setGmtCreate(System.currentTimeMillis());
+			question.setGmtModified(question.getGmtCreate());
+			questionMapper.insert(question);
+		} else {
+			question.setGmtModified(System.currentTimeMillis());
+			QuestionExample questionExample=new QuestionExample();
+			questionExample.createCriteria().andIdEqualTo(question.getId());
+			questionMapper.updateByExampleSelective(question,questionExample);
+		}
 	}
 }
