@@ -5,6 +5,8 @@ package file.majing.community.service;
 
 import file.majing.community.dto.PaginationDTO;
 import file.majing.community.dto.QuestionDTO;
+import file.majing.community.exception.CustomizeErrorCode;
+import file.majing.community.exception.CustomizeException;
 import file.majing.community.mapper.QuestionMapper;
 import file.majing.community.mapper.UserMapper;
 import file.majing.community.model.Question;
@@ -88,6 +90,9 @@ import java.util.List;
 
 	public QuestionDTO getById(Integer id) {
 		Question question = questionMapper.selectByPrimaryKey(id);
+		if (question==null){
+			throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+		}
 		User user = userMapper.selectByPrimaryKey(question.getCreator());
 		QuestionDTO questionDTO = new QuestionDTO();
 		BeanUtils.copyProperties(question, questionDTO);
@@ -111,7 +116,10 @@ import java.util.List;
 			question.setGmtModified(System.currentTimeMillis());
 			QuestionExample questionExample=new QuestionExample();
 			questionExample.createCriteria().andIdEqualTo(question.getId());
-			questionMapper.updateByExampleSelective(question,questionExample);
+			int updated=questionMapper.updateByExampleSelective(question,questionExample);
+			if(updated!=1){
+				throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+			}
 		}
 	}
 }
