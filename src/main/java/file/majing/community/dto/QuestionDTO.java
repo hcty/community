@@ -4,14 +4,9 @@ package file.majing.community.dto;
  * QuestionDTO
  */
 
-import ch.qos.logback.core.util.TimeUtil;
 import file.majing.community.common.CommunityTimeUtils;
 import file.majing.community.model.User;
 import lombok.Data;
-
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 
 @Data public class QuestionDTO {
 	private Integer id;

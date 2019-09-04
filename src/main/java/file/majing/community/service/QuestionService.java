@@ -7,6 +7,7 @@ import file.majing.community.dto.PaginationDTO;
 import file.majing.community.dto.QuestionDTO;
 import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.exception.CustomizeException;
+import file.majing.community.mapper.QuestionExtMapper;
 import file.majing.community.mapper.QuestionMapper;
 import file.majing.community.mapper.UserMapper;
 import file.majing.community.model.Question;
@@ -21,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service public class QuestionService {
-	@Autowired UserMapper userMapper;
-	@Autowired QuestionMapper questionMapper;
-
+	@Autowired private UserMapper userMapper;
+	@Autowired private QuestionMapper questionMapper;
+	@Autowired private QuestionExtMapper questionExtMapper;
 	/**
 	 * @Author: hechuan on 2019/8/7 22:28
 	 * @param: [page, size]
@@ -31,8 +32,8 @@ import java.util.List;
 	 */
 	public PaginationDTO list(Integer page, Integer size) {
 		PaginationDTO pagination = new PaginationDTO();
-		QuestionExample questionExample=new QuestionExample();
-		Integer totalCount = (int)questionMapper.countByExample(questionExample);
+		QuestionExample questionExample = new QuestionExample();
+		Integer totalCount = (int) questionMapper.countByExample(questionExample);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
 		Integer offset = size * (page - 1);
 		if (page < 1) {
@@ -43,7 +44,8 @@ import java.util.List;
 		}
 		pagination.setPagination(totalPage, page);
 		questionExample.setOrderByClause("GMT_MODIFIED");
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample,new RowBounds(offset,size));
+		List<Question> questions = questionMapper
+				.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO = null;
 		User user = null;
@@ -60,9 +62,9 @@ import java.util.List;
 
 	public PaginationDTO list(Integer userId, Integer page, Integer size) {
 		PaginationDTO pagination = new PaginationDTO();
-		QuestionExample questionExample=new QuestionExample();
+		QuestionExample questionExample = new QuestionExample();
 		questionExample.createCriteria().andCreatorEqualTo(userId);
-		Integer totalCount = (int)questionMapper.countByExample(questionExample);
+		Integer totalCount = (int) questionMapper.countByExample(questionExample);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
 		Integer offset = size * (page - 1);
 		if (page < 1) {
@@ -73,7 +75,8 @@ import java.util.List;
 		}
 		pagination.setPagination(totalPage, page);
 		questionExample.setOrderByClause("GMT_MODIFIED");
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset,size));
+		List<Question> questions = questionMapper
+				.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO = null;
 		User user = null;
@@ -90,7 +93,7 @@ import java.util.List;
 
 	public QuestionDTO getById(Integer id) {
 		Question question = questionMapper.selectByPrimaryKey(id);
-		if (question==null){
+		if (question == null) {
 			throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
 		}
 		User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -114,12 +117,25 @@ import java.util.List;
 			questionMapper.insert(question);
 		} else {
 			question.setGmtModified(System.currentTimeMillis());
-			QuestionExample questionExample=new QuestionExample();
+			QuestionExample questionExample = new QuestionExample();
 			questionExample.createCriteria().andIdEqualTo(question.getId());
-			int updated=questionMapper.updateByExampleSelective(question,questionExample);
-			if(updated!=1){
+			int updated = questionMapper.updateByExampleSelective(question, questionExample);
+			if (updated != 1) {
 				throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
 			}
 		}
+	}
+
+	/**
+	 * 修改阅读数
+	 * @Author: hechuan on 2019/9/4 22:40
+	 * @param:
+	 * @return:
+	 */
+	public void incView(Integer id) {
+		Question qestion = new Question();
+		qestion.setViewCount(1);
+		qestion.setId(id);
+		questionExtMapper.incView(qestion);
 	}
 }
