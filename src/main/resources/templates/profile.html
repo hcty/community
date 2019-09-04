@@ -25,11 +25,10 @@
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading" th:text="${question.title}"></h4>
-                    <span th:text="${question.description}"></span> &nbsp;&nbsp;
                     • <span th:text="${question.commentCount}"></span> 个回复 &nbsp;
                     • <span th:text="${question.viewCount}"></span> 次浏览 &nbsp;
-                    • 16 分钟前 &nbsp;
-                    • <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span> &nbsp;
+                    • <span th:text="${question.createTimeStr.replaceAll('-','')}"></span>前 &nbsp;
+                    • <span th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></span> &nbsp;
                 </div>
             </div>
             <nav aria-label="Page navigation">
