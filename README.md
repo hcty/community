@@ -15,8 +15,8 @@
 [Visual-Paradigm](https://www.visual-paradigm.com)      
 [Flyway](https://flywaydb.org/getstarted/firststeps/maven)
 [Lombok](https://www.projectlombok.org/)    
-[MyBatis Generator](http://www.mybatis.org/generator/)
-
+[MyBatis Generator](http://www.mybatis.org/generator/)  
+[Postman](https://chrome.google.com/webstore/detail/tabbed-postman-rest-clien/coohjcphdfgbiolnekdpbcijmhambjff)
 ##  脚本
 ```sql
 ---用户表

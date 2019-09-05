@@ -3,10 +3,12 @@ package file.majing.community.exception;
 /**
  * Created by hechuan on 2019/9/4;
  */
-public class CustomizeException extends RuntimeException{
+public class CustomizeException extends RuntimeException {
 	private String message;
+	private Integer code;
 
 	public CustomizeException(ICustomizeErrorCode errorCode) {
+		this.code = errorCode.getCode();
 		this.message = errorCode.getMessage();
 	}
 
@@ -14,7 +16,7 @@ public class CustomizeException extends RuntimeException{
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public Integer getCode() {
+		return code;
 	}
 }

@@ -60,7 +60,7 @@ import java.util.List;
 		return pagination;
 	}
 
-	public PaginationDTO list(Integer userId, Integer page, Integer size) {
+	public PaginationDTO list(Long userId, Integer page, Integer size) {
 		PaginationDTO pagination = new PaginationDTO();
 		QuestionExample questionExample = new QuestionExample();
 		questionExample.createCriteria().andCreatorEqualTo(userId);
@@ -91,7 +91,7 @@ import java.util.List;
 		return pagination;
 	}
 
-	public QuestionDTO getById(Integer id) {
+	public QuestionDTO getById(Long id) {
 		Question question = questionMapper.selectByPrimaryKey(id);
 		if (question == null) {
 			throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -114,6 +114,9 @@ import java.util.List;
 		if (question.getId() == null) {
 			question.setGmtCreate(System.currentTimeMillis());
 			question.setGmtModified(question.getGmtCreate());
+			question.setViewCount(0);
+			question.setCommentCount(0);
+			question.setLikeCount(0);
 			questionMapper.insert(question);
 		} else {
 			question.setGmtModified(System.currentTimeMillis());
@@ -132,7 +135,7 @@ import java.util.List;
 	 * @param:
 	 * @return:
 	 */
-	public void incView(Integer id) {
+	public void incView(Long id) {
 		Question qestion = new Question();
 		qestion.setViewCount(1);
 		qestion.setId(id);
