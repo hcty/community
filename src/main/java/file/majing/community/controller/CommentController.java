@@ -1,10 +1,8 @@
 package file.majing.community.controller;
 
-import file.majing.community.dto.CommentDTO;
+import file.majing.community.dto.CommentCreateDTO;
 import file.majing.community.dto.ResultDTO;
 import file.majing.community.exception.CustomizeErrorCode;
-import file.majing.community.exception.CustomizeException;
-import file.majing.community.mapper.CommentMapper;
 import file.majing.community.model.Comment;
 import file.majing.community.model.User;
 import file.majing.community.service.CommentService;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 /**
  * Created by hechuan on 2019/9/4;
@@ -21,7 +18,7 @@ import java.util.HashMap;
 @Controller public class CommentController {
 	@Autowired private CommentService commentService;
 	@ResponseBody @RequestMapping(value = "/comment", method = RequestMethod.POST) public Object post(
-			@RequestBody CommentDTO commentDTO,
+			@RequestBody CommentCreateDTO commentDTO,
 			HttpServletRequest request) {
 		User user= (User) request.getSession().getAttribute("user");
 		if (user==null){
