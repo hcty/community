@@ -1,7 +1,9 @@
 package file.majing.community.controller;
 
 import file.majing.community.dto.CommentCreateDTO;
+import file.majing.community.dto.CommentDTO;
 import file.majing.community.dto.ResultDTO;
+import file.majing.community.enums.CommentTypeEnum;
 import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.model.Comment;
 import file.majing.community.model.User;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by hechuan on 2019/9/4;
@@ -37,5 +40,10 @@ import javax.servlet.http.HttpServletRequest;
 		comment.setCommentator(user.getId());
 		commentService.insert(comment);
 		return ResultDTO.okOff();
+	}
+	@ResponseBody @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+	public ResultDTO<List<CommentDTO>> comments(@PathVariable(name="id")Long id){
+		List<CommentDTO> commentDTOS = commentService.listByQuestionID(id, CommentTypeEnum.COMMENT);
+		return ResultDTO.okOff(commentDTOS);
 	}
 }

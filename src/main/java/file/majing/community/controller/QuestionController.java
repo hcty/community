@@ -1,8 +1,8 @@
 package file.majing.community.controller;
 
-import file.majing.community.dto.CommentCreateDTO;
 import file.majing.community.dto.CommentDTO;
 import file.majing.community.dto.QuestionDTO;
+import file.majing.community.enums.CommentTypeEnum;
 import file.majing.community.service.CommentService;
 import file.majing.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 		QuestionDTO questionDTO = questionService.getById(id);
 		//累加阅读数
 		questionService.incView(questionDTO.getId());
-		List<CommentDTO> comments=commentService.listByQuestionID(id);
+		List<CommentDTO> comments=commentService.listByQuestionID(id, CommentTypeEnum.QUESTION);
 		model.addAttribute("question", questionDTO);
 		model.addAttribute("comments", comments);
 		return "question";

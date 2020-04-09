@@ -4,10 +4,7 @@ import file.majing.community.dto.CommentDTO;
 import file.majing.community.enums.CommentTypeEnum;
 import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.exception.CustomizeException;
-import file.majing.community.mapper.CommentMapper;
-import file.majing.community.mapper.QuestionExtMapper;
-import file.majing.community.mapper.QuestionMapper;
-import file.majing.community.mapper.UserMapper;
+import file.majing.community.mapper.*;
 import file.majing.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +25,7 @@ import java.util.stream.Collectors;
 	@Autowired private QuestionMapper questionMapper;
 	@Autowired private QuestionExtMapper questionExtMapper;
 	@Autowired private UserMapper userMapper;
-
+	@Autowired private CommentExtMapper commentExtMapper;
 	@Transactional public void insert(Comment comment) {
 		if (comment.getParentId() == null || comment.getParentId() == 0) {
 			throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -43,6 +40,11 @@ import java.util.stream.Collectors;
 				throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
 			}
 			commentMapper.insert(comment);
+			//增加评论数
+			Comment parentComment=new Comment();
+			parentComment.setId(comment.getParentId());
+			parentComment.setCommentCount(1);
+			commentExtMapper.incCommentCount(parentComment);
 		} else {
 			//回复问题
 			Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -62,9 +64,9 @@ import java.util.stream.Collectors;
 	 * @param:
 	 * @return:
 	 */
-	public List<CommentDTO> listByQuestionID(Long id) {
+	public List<CommentDTO> listByQuestionID(Long id, CommentTypeEnum type) {
 		CommentExample commentExample = new CommentExample();
-		commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+		commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
 		commentExample.setOrderByClause("GMT_CREATE");
 		List<Comment> comments = commentMapper.selectByExample(commentExample);
 		if (comments.size() == 0) {
