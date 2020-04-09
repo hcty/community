@@ -35,7 +35,7 @@
                             <li><a href="/logout">退出登录</a></li>
                         </ul>
                     </li>
-                    <li th:unless="not ${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=dcf0854013085140d0d4&redirect_uri=http://localhost:8887/callback&scope=user&state=1">GitHub 登录</a></li>
+                    <li th:unless="not ${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=dcf0854013085140d0d4&redirect_uri=http://localhost:8888/callback&scope=user&state=1">GitHub 登录</a></li>
                     <!--<li th:unless="not ${session.user == null}"><a href="http://openapi.baidu.com/oauth/2.0/authorize?client_id=kThzkWhPgYl6TW251CSg5zSA&response_type=code&redirect_uri=http://localhost:8887/bdcallback&display=popup&state=1">百度登录</a></li>-->
                 </ul>
             </div>

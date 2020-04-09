@@ -50,16 +50,16 @@ create table question
 
 ```
 
-##  说明 
+##  说明
 ### 1.使用技术：
-#### 后端 
+#### 后端
     Spring Boot     快速构建项目
     OKHttp          http连接
     GitHub API      登录授权
     FlyWay          数据库管理工具(执行migration命令  mvn flyway:migrate)
 #### 前端
     BootStrop
- 
+
 ## Bash
     FlyWay          mvn flyway:migrate
     MBG             mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate

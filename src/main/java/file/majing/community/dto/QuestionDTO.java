@@ -34,4 +34,5 @@ import lombok.Data;
 				CommunityTimeUtils.getDatePoor(this.gmtModified, System.currentTimeMillis()) :
 				"";
 	}
+
 }

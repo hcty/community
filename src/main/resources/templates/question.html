@@ -51,7 +51,7 @@
                             <span class="glyphicon glyphicon-thumbs-up icon"></span>
                             <span class="glyphicon glyphicon-thumbs-down icon"></span>
                             <span class="glyphicon glyphicon-comment icon"></span>
-                            <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}" class="pull-right"></span>
+                            <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd HH:mm:ss')}" class="pull-right"></span>
                         </div>
                     </div>
                 </div>
@@ -68,6 +68,7 @@
                     </div>
                 </div>
                 <textarea class="form-control comment" rows="6" id="content"></textarea>
+                <span class="alert alert-danger" th:text="${error}" th:if="${error != null}"></span>
                 <input type="hidden" id="question_id" th:value="${question.id}">
                 <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
             </div>

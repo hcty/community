@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="226.0" y="0.0">A</node>
+    <node x="0.0" y="192.0">B</node>
+    <node x="322.0" y="0.0">C</node>
+    <node x="0.0" y="315.0">D</node>
+    <node x="101.0" y="73.0">Interface1</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="B" target="Interface1">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="A" target="Interface1">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="119.5" y="116.0" />
+  <SelectedNodes>
+    <node>D</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
