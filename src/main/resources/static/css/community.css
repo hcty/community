@@ -117,3 +117,10 @@ body {
 .question-wechat {
     width: 200px;
 }
+.publish-tag-tag{
+    display: none;
+    margin-top: 10px;
+}
+.tag-label{
+    margin-right: 10px;
+}

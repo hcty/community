@@ -107,3 +107,20 @@ function comment(e) {
     var content=$("#input-"+questionId).val();
     comment2target(questionId,2,content);
 }
+
+function selectTag(tag) {
+    var value=tag.getAttribute("data-tag");
+    var pervious=$("#tag").val();
+    if(pervious.indexOf(value) == -1){
+        if(pervious){
+            $("#tag").val(pervious+","+value);
+        }else{
+            $("#tag").val(value);
+        }
+    }
+}
+
+function showSelectTag() {
+    $("#selectTag").show();
+    $(".tab-pane").first().addClass("active");
+}

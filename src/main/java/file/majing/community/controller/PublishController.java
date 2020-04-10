@@ -1,5 +1,6 @@
 package file.majing.community.controller;
 
+import file.majing.community.cache.TagCache;
 import file.majing.community.dto.QuestionDTO;
 import file.majing.community.model.Question;
 import file.majing.community.model.User;
@@ -24,9 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 		model.addAttribute("description", question.getDescription());
 		model.addAttribute("tag", question.getTag());
 		model.addAttribute("id",id);
+		model.addAttribute("tags", TagCache.get());
 		return "publish";
 	}
-	@GetMapping("/publish") public String publish() {
+	@GetMapping("/publish") public String publish(Model model) {
+		model.addAttribute("tags", TagCache.get());
 		return "publish";
 	}
 
@@ -40,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 		model.addAttribute("title", title);
 		model.addAttribute("description", description);
 		model.addAttribute("tag", tag);
+		model.addAttribute("tags", TagCache.get());
 		if (!StringUtils.hasLength(title)) {
 			model.addAttribute("error", "标题不能为空");
 			return "publish";
@@ -50,6 +54,11 @@ import javax.servlet.http.HttpServletRequest;
 		}
 		if (!StringUtils.hasLength(tag)) {
 			model.addAttribute("error", "标签不能为空");
+			return "publish";
+		}
+		String invalid=TagCache.filterInvalid(tag);
+		if(StringUtils.hasLength(invalid)){
+			model.addAttribute("error", "输入非法标签："+invalid);
 			return "publish";
 		}
 		User user = (User) request.getSession().getAttribute("user");
