@@ -24,9 +24,11 @@ import java.util.List;
 		QuestionDTO questionDTO = questionService.getById(id);
 		//累加阅读数
 		questionService.incView(questionDTO.getId());
+		List<QuestionDTO> realetedQuestions=questionService.selectReleted(questionDTO);
 		List<CommentDTO> comments=commentService.listByQuestionID(id, CommentTypeEnum.QUESTION);
 		model.addAttribute("question", questionDTO);
 		model.addAttribute("comments", comments);
+		model.addAttribute("realetedQuestions",realetedQuestions);
 		return "question";
 	}
 }

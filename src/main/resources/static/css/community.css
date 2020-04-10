@@ -34,6 +34,7 @@ body {
 .community-menu {
     color: #999;
     font-size: 13px;
+    padding-left: 20px;
 }
 
 .jumbotron {
@@ -101,4 +102,18 @@ body {
 
 .sub-comments .btn{
     margin: 10px 0;
+}
+.question-tag{
+    margin-right: 5px;
+}
+.question-related{
+    line-height: 20px;
+    font-size: 12px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+
+.question-wechat {
+    width: 200px;
 }

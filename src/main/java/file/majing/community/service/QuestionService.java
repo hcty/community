@@ -18,14 +18,18 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service public class QuestionService {
 	@Autowired private UserMapper userMapper;
 	@Autowired private QuestionMapper questionMapper;
 	@Autowired private QuestionExtMapper questionExtMapper;
+
 	/**
 	 * @Author: hechuan on 2019/8/7 22:28
 	 * @param: [page, size]
@@ -44,7 +48,7 @@ import java.util.List;
 			page = totalPage;
 		}
 		pagination.setPagination(totalPage, page);
-		questionExample.setOrderByClause("GMT_MODIFIED");
+		questionExample.setOrderByClause("GMT_CREATE desc");
 		List<Question> questions = questionMapper
 				.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
@@ -111,8 +115,7 @@ import java.util.List;
 	 * @param:
 	 * @return:
 	 */
-	@Transactional
-	public void createOrUpdate(Question question) {
+	@Transactional public void createOrUpdate(Question question) {
 		if (question.getId() == null) {
 			question.setGmtCreate(System.currentTimeMillis());
 			question.setGmtModified(question.getGmtCreate());
@@ -133,6 +136,7 @@ import java.util.List;
 
 	/**
 	 * 修改阅读数
+	 *
 	 * @Author: hechuan on 2019/9/4 22:40
 	 * @param:
 	 * @return:
@@ -142,5 +146,22 @@ import java.util.List;
 		qestion.setViewCount(1);
 		qestion.setId(id);
 		questionExtMapper.incView(qestion);
+	}
+
+	public List<QuestionDTO> selectReleted(QuestionDTO questionDTO) {
+		if (!StringUtils.hasLength(questionDTO.getTag())) {
+			return new ArrayList<>();
+		}
+		//String replaceTag= questionDTO.getTag().replaceAll(",", "|");
+		String replaceTag = Arrays.stream(questionDTO.getTag().split(",")).collect(Collectors.joining("|"));
+		Question question = new Question();
+		question.setId(questionDTO.getId());
+		question.setTag(replaceTag);
+		List<Question> list = questionExtMapper.selectRelated(question);
+		return list.stream().map(q -> {
+			QuestionDTO dto = new QuestionDTO();
+			BeanUtils.copyProperties(q, dto);
+			return dto;
+		}).collect(Collectors.toList());
 	}
 }
