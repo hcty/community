@@ -1,0 +1,2 @@
+alter table NOTIFICATION add NOTIFIER_NAME varchar2(256);
+alter table NOTIFICATION add OUTER_TITLE VARCHAR2(256);

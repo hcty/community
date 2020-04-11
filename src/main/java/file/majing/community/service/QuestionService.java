@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 	 * @return: file.majing.community.dto.PaginationDTO
 	 */
 	public PaginationDTO list(Integer page, Integer size) {
-		PaginationDTO pagination = new PaginationDTO();
+		PaginationDTO<QuestionDTO> pagination = new PaginationDTO<>();
 		QuestionExample questionExample = new QuestionExample();
 		Integer totalCount = (int) questionMapper.countByExample(questionExample);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
@@ -61,12 +61,12 @@ import java.util.stream.Collectors;
 			questionDTO.setUser(user);
 			questionDTOS.add(questionDTO);
 		}
-		pagination.setQuestions(questionDTOS);
+		pagination.setData(questionDTOS);
 		return pagination;
 	}
 
 	public PaginationDTO list(Long userId, Integer page, Integer size) {
-		PaginationDTO pagination = new PaginationDTO();
+		PaginationDTO<QuestionDTO> pagination = new PaginationDTO<>();
 		QuestionExample questionExample = new QuestionExample();
 		questionExample.createCriteria().andCreatorEqualTo(userId);
 		Integer totalCount = (int) questionMapper.countByExample(questionExample);
@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
 			page = totalPage;
 		}
 		pagination.setPagination(totalPage, page);
-		questionExample.setOrderByClause("GMT_MODIFIED");
+		questionExample.setOrderByClause("GMT_MODIFIED desc");
 		List<Question> questions = questionMapper
 				.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 			questionDTO.setUser(user);
 			questionDTOS.add(questionDTO);
 		}
-		pagination.setQuestions(questionDTOS);
+		pagination.setData(questionDTOS);
 		return pagination;
 	}
 

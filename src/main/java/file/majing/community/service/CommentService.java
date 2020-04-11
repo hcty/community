@@ -2,6 +2,8 @@ package file.majing.community.service;
 
 import file.majing.community.dto.CommentDTO;
 import file.majing.community.enums.CommentTypeEnum;
+import file.majing.community.enums.NotificationStatusEnum;
+import file.majing.community.enums.NotificationTypeEnum;
 import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.exception.CustomizeException;
 import file.majing.community.mapper.*;
@@ -26,7 +28,9 @@ import java.util.stream.Collectors;
 	@Autowired private QuestionExtMapper questionExtMapper;
 	@Autowired private UserMapper userMapper;
 	@Autowired private CommentExtMapper commentExtMapper;
-	@Transactional public void insert(Comment comment) {
+	@Autowired private NotificationMapper notificationMapper;
+
+	@Transactional public void insert(Comment comment, User commentator) {
 		if (comment.getParentId() == null || comment.getParentId() == 0) {
 			throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
 		}
@@ -39,12 +43,20 @@ import java.util.stream.Collectors;
 			if (dbComment == null) {
 				throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
 			}
+			//回复问题
+			Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+			if (question == null) {
+				throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+			}
 			commentMapper.insert(comment);
 			//增加评论数
-			Comment parentComment=new Comment();
+			Comment parentComment = new Comment();
 			parentComment.setId(comment.getParentId());
 			parentComment.setCommentCount(1);
 			commentExtMapper.incCommentCount(parentComment);
+			//增加通知
+			createNofify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(),
+					NotificationTypeEnum.REPLY_COMMENT, question.getId());
 		} else {
 			//回复问题
 			Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -54,7 +66,24 @@ import java.util.stream.Collectors;
 			commentMapper.insert(comment);
 			question.setCommentCount(1);
 			questionExtMapper.incCommentCount(question);
+			//增加通知
+			createNofify(comment, question.getCreator(), commentator.getName(), question.getTitle(),
+					NotificationTypeEnum.REPLY_QUESTION, question.getId());
 		}
+	}
+
+	private void createNofify(Comment comment, Long receiver, String notifileName, String outerTitle,
+			NotificationTypeEnum notificationType, Long outerId) {
+		Notification notification = new Notification();
+		notification.setGmtCreate(System.currentTimeMillis());
+		notification.setType(notificationType.getType());
+		notification.setOuterid(outerId);
+		notification.setNitifier(comment.getCommentator());
+		notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+		notification.setReceiver(receiver);
+		notification.setNotifierName(notifileName);
+		notification.setOuterTitle(outerTitle);
+		notificationMapper.insert(notification);
 	}
 
 	/**
@@ -67,7 +96,7 @@ import java.util.stream.Collectors;
 	public List<CommentDTO> listByQuestionID(Long id, CommentTypeEnum type) {
 		CommentExample commentExample = new CommentExample();
 		commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
-		commentExample.setOrderByClause("GMT_CREATE");
+		commentExample.setOrderByClause("GMT_CREATE desc");
 		List<Comment> comments = commentMapper.selectByExample(commentExample);
 		if (comments.size() == 0) {
 			return new ArrayList<>();

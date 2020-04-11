@@ -105,6 +105,9 @@ body {
 }
 .question-tag{
     margin-right: 5px;
+    margin: 10px 10px;
+    white-space: normal;
+    display: inline-block;
 }
 .question-related{
     line-height: 20px;

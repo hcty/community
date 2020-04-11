@@ -38,7 +38,7 @@ import java.util.List;
 		comment.setGmtCreate(System.currentTimeMillis());
 		comment.setGmtModified(System.currentTimeMillis());
 		comment.setCommentator(user.getId());
-		commentService.insert(comment);
+		commentService.insert(comment,user);
 		return ResultDTO.okOff();
 	}
 	@ResponseBody @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
