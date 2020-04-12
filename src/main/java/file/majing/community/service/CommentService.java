@@ -30,6 +30,12 @@ import java.util.stream.Collectors;
 	@Autowired private CommentExtMapper commentExtMapper;
 	@Autowired private NotificationMapper notificationMapper;
 
+	/**
+	 * 回复问题或评论
+	 *
+	 * @param comment     回复内容
+	 * @param commentator 回复人
+	 */
 	@Transactional public void insert(Comment comment, User commentator) {
 		if (comment.getParentId() == null || comment.getParentId() == 0) {
 			throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -55,8 +61,8 @@ import java.util.stream.Collectors;
 			parentComment.setCommentCount(1);
 			commentExtMapper.incCommentCount(parentComment);
 			//增加通知
-			createNofify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(),
-					NotificationTypeEnum.REPLY_COMMENT, question.getId());
+			createNofify(comment.getCommentator(), dbComment.getCommentator(), commentator.getName(),
+					question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
 		} else {
 			//回复问题
 			Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -67,18 +73,28 @@ import java.util.stream.Collectors;
 			question.setCommentCount(1);
 			questionExtMapper.incCommentCount(question);
 			//增加通知
-			createNofify(comment, question.getCreator(), commentator.getName(), question.getTitle(),
+			createNofify(comment.getCommentator(), question.getCreator(), commentator.getName(), question.getTitle(),
 					NotificationTypeEnum.REPLY_QUESTION, question.getId());
 		}
 	}
 
-	private void createNofify(Comment comment, Long receiver, String notifileName, String outerTitle,
+	/**
+	 * 新增通知
+	 *
+	 * @param commentator      回复或评论人id
+	 * @param receiver         通知接受人id
+	 * @param notifileName     回复或评论人名称
+	 * @param outerTitle       评论或回复问题标题
+	 * @param notificationType 通知类型，评论/回复
+	 * @param outerId          评论/回复的问题id
+	 */
+	private void createNofify(Long commentator, Long receiver, String notifileName, String outerTitle,
 			NotificationTypeEnum notificationType, Long outerId) {
 		Notification notification = new Notification();
 		notification.setGmtCreate(System.currentTimeMillis());
 		notification.setType(notificationType.getType());
 		notification.setOuterid(outerId);
-		notification.setNitifier(comment.getCommentator());
+		notification.setNitifier(commentator);
 		notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
 		notification.setReceiver(receiver);
 		notification.setNotifierName(notifileName);
@@ -87,11 +103,11 @@ import java.util.stream.Collectors;
 	}
 
 	/**
-	 * 评论列表展示
+	 * 回复内容展示
 	 *
-	 * @Author: hechuan on 2019/9/6 23:36
-	 * @param:
-	 * @return:
+	 * @param id   问题id
+	 * @param type 回复类型，1:问题回复 2:评论回复
+	 * @return
 	 */
 	public List<CommentDTO> listByQuestionID(Long id, CommentTypeEnum type) {
 		CommentExample commentExample = new CommentExample();
@@ -108,7 +124,7 @@ import java.util.stream.Collectors;
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andIdIn(userIds);
 		List<User> users = userMapper.selectByExample(userExample);
-		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, user -> user));
 		//转换comment为commentDTO
 		List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
 			CommentDTO commentDTO = new CommentDTO();

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 		model.addAttribute("pagination", pagination);
 		User user = (User) request.getSession().getAttribute("user");
 		if (user != null) {
-			Long unreadCount=notificationService.unreadCount(user.getId());
+			Long unreadCount=notificationService.unreadCount(user.getId());//将未读消息数放到session中
 			request.getSession().setAttribute("unreadCount",unreadCount);
 		}
 		return "index";

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
+ * session拦截器,判断用户是否登录
  * Created by hechuan on 2019/9/2;
  */
 @Service public class SessionInterceptor implements HandlerInterceptor {
@@ -28,8 +29,8 @@ import java.util.List;
 					String token = cookie.getValue();
 					UserExample userExample = new UserExample();
 					userExample.createCriteria().andTokenEqualTo(token);
-					List<User> users=userMapper.selectByExample(userExample);
-					if (users.size()!=0) {
+					List<User> users = userMapper.selectByExample(userExample);
+					if (users.size() != 0) {
 						request.getSession().setAttribute("user", users.get(0));
 					}
 					break;

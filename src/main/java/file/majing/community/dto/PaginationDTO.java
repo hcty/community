@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 数据分页dto
  * Created by hechuan on 2019/8/7;
  */
 @Data public class PaginationDTO<T> {
-	private List<T> data;
-	private boolean showPrevious;
-	private boolean showFirstPage;
-	private boolean showNext;
-	private boolean showEndPage;
-	private Integer page;
-	private List<Integer> pages = new ArrayList<Integer>(7);
-	private Integer totalPage;
+	private List<T> data;//分页展示的数据
+	private boolean showPrevious;//上一页
+	private boolean showFirstPage;//首页
+	private boolean showNext;//下一页
+	private boolean showEndPage;//尾页
+	private Integer page;//当前页
+	private List<Integer> pages = new ArrayList<Integer>(7);//展示的页码集合
+	private Integer totalPage;//总页数
+
 	public void setPagination(Integer totalPage, Integer page) {
 		this.totalPage = totalPage;
 		this.page = page;

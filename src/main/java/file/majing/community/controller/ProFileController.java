@@ -22,6 +22,16 @@ import javax.servlet.http.HttpServletRequest;
 	@Autowired private QuestionService questionService;
 	@Autowired private NotificationService notificationService;
 
+	/**
+	 * 我的问题/通知列表
+	 *
+	 * @param action 查询类型，问题或消息通知
+	 * @param model
+	 * @param request
+	 * @param page
+	 * @param size
+	 * @return
+	 */
 	@GetMapping("/profile/{action}") public String profile(@PathVariable(name = "action") String action, Model model,
 			HttpServletRequest request, @RequestParam(name = "page", defaultValue = "1") Integer page,
 			@RequestParam(name = "size", defaultValue = "5") Integer size) {
@@ -37,8 +47,8 @@ import javax.servlet.http.HttpServletRequest;
 		} else if ("replies".equals(action)) {
 			model.addAttribute("section", "replies");
 			model.addAttribute("sectionName", "最新回复");
-			PaginationDTO notification=notificationService.list(user.getId(), page, size);
-			Long unreadCount=notificationService.unreadCount(user.getId());
+			PaginationDTO notification = notificationService.list(user.getId(), page, size);//获取通知消息
+			Long unreadCount = notificationService.unreadCount(user.getId());
 			model.addAttribute("pagination", notification);
 			model.addAttribute("unreadCount", unreadCount);
 		}

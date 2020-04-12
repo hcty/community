@@ -22,6 +22,13 @@ import java.util.List;
 @Controller public class CommentController {
 	@Autowired private CommentService commentService;
 
+	/**
+	 * 新增回复
+	 *
+	 * @param commentDTO
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody @RequestMapping(value = "/comment", method = RequestMethod.POST) public Object post(
 			@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
@@ -38,11 +45,18 @@ import java.util.List;
 		comment.setGmtCreate(System.currentTimeMillis());
 		comment.setGmtModified(System.currentTimeMillis());
 		comment.setCommentator(user.getId());
-		commentService.insert(comment,user);
+		commentService.insert(comment, user);
 		return ResultDTO.okOff();
 	}
-	@ResponseBody @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
-	public ResultDTO<List<CommentDTO>> comments(@PathVariable(name="id")Long id){
+
+	/**
+	 * 回去回复评论
+	 *
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET) public ResultDTO<List<CommentDTO>> comments(
+			@PathVariable(name = "id") Long id) {
 		List<CommentDTO> commentDTOS = commentService.listByQuestionID(id, CommentTypeEnum.COMMENT);
 		return ResultDTO.okOff(commentDTOS);
 	}

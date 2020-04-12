@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
+ * 全局异常提醒
  * Created by hechuan on 2019/9/4;
  */
 @Controller @RequestMapping("${server.error.path:${error.path:/error}}") public class CustomizeErrorController

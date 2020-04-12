@@ -18,28 +18,49 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller public class PublishController {
 	@Autowired private QuestionService questionService;
-	@GetMapping("/publish/{id}")
-	public String edit(@PathVariable(name="id")Long id,Model model){
-		QuestionDTO question=questionService.getById(id);
+
+	/**
+	 * 查询问题详情
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/publish/{id}") public String edit(@PathVariable(name = "id") Long id, Model model) {
+		QuestionDTO question = questionService.getById(id);
 		model.addAttribute("title", question.getTitle());
 		model.addAttribute("description", question.getDescription());
 		model.addAttribute("tag", question.getTag());
-		model.addAttribute("id",id);
+		model.addAttribute("id", id);
 		model.addAttribute("tags", TagCache.get());
 		return "publish";
 	}
+
+	/**
+	 * 点击发布按钮跳转
+	 *
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/publish") public String publish(Model model) {
 		model.addAttribute("tags", TagCache.get());
 		return "publish";
 	}
 
-	@PostMapping("/publish")
-	public String doPublish(
-			@RequestParam(value = "title", required = false) String title,
+	/**
+	 * 新增或修改问题
+	 *
+	 * @param title       问题标题
+	 * @param description 问题内容
+	 * @param tag         问题标签
+	 * @param id          问题id
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/publish") public String doPublish(@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "tag", required = false) String tag,
-			@RequestParam(value = "id",required =false)Long id,
-			HttpServletRequest request, Model model) {
+			@RequestParam(value = "id", required = false) Long id, HttpServletRequest request, Model model) {
 		model.addAttribute("title", title);
 		model.addAttribute("description", description);
 		model.addAttribute("tag", tag);
@@ -56,9 +77,9 @@ import javax.servlet.http.HttpServletRequest;
 			model.addAttribute("error", "标签不能为空");
 			return "publish";
 		}
-		String invalid=TagCache.filterInvalid(tag);
-		if(StringUtils.hasLength(invalid)){
-			model.addAttribute("error", "输入非法标签："+invalid);
+		String invalid = TagCache.filterInvalid(tag);
+		if (StringUtils.hasLength(invalid)) {
+			model.addAttribute("error", "输入非法标签：" + invalid);
 			return "publish";
 		}
 		User user = (User) request.getSession().getAttribute("user");

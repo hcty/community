@@ -20,6 +20,12 @@ import java.util.List;
 	@Autowired private QuestionService questionService;
 	@Autowired private CommentService commentService;
 
+	/**
+	 * 查看问题
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/question/{id}") public String question(@PathVariable(name = "id") Long id, Model model) {
 		QuestionDTO questionDTO = questionService.getById(id);
 		//累加阅读数

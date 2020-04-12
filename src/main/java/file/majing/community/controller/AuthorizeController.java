@@ -102,7 +102,7 @@ import java.util.UUID;
 	public String logout(HttpServletRequest request,
 			HttpServletResponse response){
 		request.getSession().removeAttribute("user");
-		request.getSession().removeAttribute("unreadCount");
+		request.getSession().removeAttribute("unreadCount");//一处session中的未读消息数
 		Cookie cookie=new Cookie("token",null);
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 注册session拦截器，拦截所有请求
  * Created by hechuan on 2019/9/2;
  */
 @Configuration public class WebConfig implements WebMvcConfigurer {

@@ -9,18 +9,18 @@ import file.majing.community.model.User;
 import lombok.Data;
 
 @Data public class QuestionDTO {
-	private Long id;
-	private String title;
-	private String description;
-	private Long gmtCreate;
-	private Long gmtModified;
-	private Long creator;
-	private String tag;
-	private Integer viewCount;
-	private Integer commentCount;
-	private Integer likeCount;
-	private User user;
-	private String diffTime;
+	private Long id;//问题id
+	private String title;//问题标题
+	private String description;//问题内日哦那个
+	private Long gmtCreate;//创建时间
+	private Long gmtModified;//修改时间
+	private Long creator;//创建用户id
+	private String tag;//问题标题
+	private Integer viewCount;//阅读数
+	private Integer commentCount;//回复数
+	private Integer likeCount;//点赞数
+	private User user;//创建用户
+	private String diffTime;//修改时间
 
 	/**
 	 * 计算该问题是多久前发布的

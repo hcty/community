@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 	@Autowired private QuestionExtMapper questionExtMapper;
 
 	/**
+	 * 首页展示问题
 	 * @Author: hechuan on 2019/8/7 22:28
 	 * @param: [page, size]
 	 * @return: file.majing.community.dto.PaginationDTO
@@ -65,6 +66,13 @@ import java.util.stream.Collectors;
 		return pagination;
 	}
 
+	/**
+	 * 展示当前用户问题，我的问题
+	 * @param userId
+	 * @param page
+	 * @param size
+	 * @return
+	 */
 	public PaginationDTO list(Long userId, Integer page, Integer size) {
 		PaginationDTO<QuestionDTO> pagination = new PaginationDTO<>();
 		QuestionExample questionExample = new QuestionExample();
@@ -96,6 +104,11 @@ import java.util.stream.Collectors;
 		return pagination;
 	}
 
+	/**
+	 * 根据id查询问题
+	 * @param id
+	 * @return
+	 */
 	public QuestionDTO getById(Long id) {
 		Question question = questionMapper.selectByPrimaryKey(id);
 		if (question == null) {
@@ -145,9 +158,14 @@ import java.util.stream.Collectors;
 		Question qestion = new Question();
 		qestion.setViewCount(1);
 		qestion.setId(id);
-		questionExtMapper.incView(qestion);
+		questionExtMapper.incView(qestion);//修改阅读数
 	}
 
+	/**
+	 * 相关问题展示，查询与该问题标签相关的问题
+	 * @param questionDTO
+	 * @return 将Question转换成QuestionDTO
+	 */
 	public List<QuestionDTO> selectReleted(QuestionDTO questionDTO) {
 		if (!StringUtils.hasLength(questionDTO.getTag())) {
 			return new ArrayList<>();
@@ -157,7 +175,7 @@ import java.util.stream.Collectors;
 		Question question = new Question();
 		question.setId(questionDTO.getId());
 		question.setTag(replaceTag);
-		List<Question> list = questionExtMapper.selectRelated(question);
+		List<Question> list = questionExtMapper.selectRelated(question);//mybatis正则匹配查询
 		return list.stream().map(q -> {
 			QuestionDTO dto = new QuestionDTO();
 			BeanUtils.copyProperties(q, dto);

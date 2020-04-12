@@ -1,6 +1,7 @@
 package file.majing.community.exception;
 
 /**
+ * 异常信息
  * Created by hechuan on 2019/9/4;
  */
 public class CustomizeException extends RuntimeException {

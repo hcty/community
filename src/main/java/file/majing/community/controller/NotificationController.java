@@ -24,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 		if (user == null) {
 			return "redirect:/";
 		}
-		NotificationDTO notificationDTO=notificationService.read(id,user);
-		Long unreadCount=notificationService.unreadCount(user.getId());
-		request.getSession().setAttribute("unreadCount",unreadCount);
-		if(NotificationTypeEnum.REPLY_COMMENT.getType() == notificationDTO.getType()||
-				NotificationTypeEnum.REPLY_QUESTION.getType() == notificationDTO.getType()){
-			return "redirect:/question/"+notificationDTO.getOuterid();
+		NotificationDTO notificationDTO = notificationService.read(id, user);//读取当前消息，并将该消息改为已读
+		Long unreadCount = notificationService.unreadCount(user.getId());
+		request.getSession().setAttribute("unreadCount", unreadCount);//将未读消息数放到session中
+		if (NotificationTypeEnum.REPLY_COMMENT.getType() == notificationDTO.getType()
+				|| NotificationTypeEnum.REPLY_QUESTION.getType() == notificationDTO.getType()) {
+			return "redirect:/question/" + notificationDTO.getOuterid();
 		}
 		return "redirect:/";
 	}

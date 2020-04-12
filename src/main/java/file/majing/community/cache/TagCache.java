@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 常用问题标签缓存
  * Created by hechuan on 2020/4/10;
  */
 public class TagCache {
@@ -52,11 +53,17 @@ public class TagCache {
 		tagDTOS.add(tool);
 		return tagDTOS;
 	}
-	
-	public static String filterInvalid(String tags){
-		String[] split = StringUtils.split(tags, ",");
+
+	/**
+	 * 筛选未在常用标签列表中的标签
+	 *
+	 * @param tags 用户输入标签
+	 * @return
+	 */
+	public static String filterInvalid(String tags) {
 		List<String> tagList = get().stream().flatMap(tag -> tag.getTags().stream()).collect(Collectors.toList());
-		String invalid = Arrays.stream(split).filter(t -> !tagList.contains(t)).collect(Collectors.joining(","));
+		String invalid = Arrays.stream(StringUtils.split(tags, ",")).filter(t -> !tagList.contains(t))
+				.collect(Collectors.joining(","));
 		return invalid;
 	}
 }
