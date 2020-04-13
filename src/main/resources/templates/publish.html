@@ -6,9 +6,11 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="navigation :: nav"></div>
@@ -24,11 +26,26 @@
                     <input type="text" class="form-control" id="title" name="title" placeholder="问题标题"
                            th:value="${title}" autocomplete="off">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="question-editor">
                     <label for="description">问题补充(必填，请参照右侧提示)：</label>
-                    <textarea name="description" id="description" cols="50" rows="3" class="form-control"
+                    <textarea name="description" id="description" cols="50" rows="3" style="display:none;"
+                              class="form-control"
                               th:text="${description}"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("question-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            delay:0,
+                            watch:false,
+                            placheholder:"请输入问题描述",
+                            plugPath:"/js/plugins/",
+                            emoji:true
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
                     <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以,号隔开"
@@ -50,8 +67,9 @@
                                         <th:block th:each="selectTag,pro:${selectCategory.tags}">
                                             <td align="left">
                                                 <span class="label label-info question-tag">
-                                                    <span class="glyphicon glyphicon-tags" ></span>
-                                                    <span class="label label-info" onclick="selectTag(this)" th:data-tag="${selectTag}" th:text="${selectTag}"></span>
+                                                    <span class="glyphicon glyphicon-tags"></span>
+                                                    <span class="label label-info" onclick="selectTag(this)"
+                                                          th:data-tag="${selectTag}" th:text="${selectTag}"></span>
                                                 </span>
                                             </td>
                                             <!--判断，到第6个的时候换行-->
