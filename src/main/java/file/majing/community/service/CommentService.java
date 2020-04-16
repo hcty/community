@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 		if (comment.getType() == null && CommentTypeEnum.isExist(comment.getType())) {
 			throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
 		}
+		comment.setCommentCount(0);//初始化评论数
 		if (comment.getType().intValue() == CommentTypeEnum.COMMENT.getType().intValue()) {
 			//回复评论
 			Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());

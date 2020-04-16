@@ -8,6 +8,8 @@ import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.model.Comment;
 import file.majing.community.model.User;
 import file.majing.community.service.CommentService;
+import file.majing.community.service.NotificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +21,10 @@ import java.util.List;
 /**
  * Created by hechuan on 2019/9/4;
  */
+@Slf4j
 @Controller public class CommentController {
 	@Autowired private CommentService commentService;
-
+	@Autowired private NotificationService notificationService;
 	/**
 	 * 新增回复
 	 *
@@ -46,6 +49,10 @@ import java.util.List;
 		comment.setGmtModified(System.currentTimeMillis());
 		comment.setCommentator(user.getId());
 		commentService.insert(comment, user);
+		if (user != null) {
+			Long unreadCount=notificationService.unreadCount(user.getId());//将未读消息数放到session中
+			request.getSession().setAttribute("unreadCount",unreadCount);
+		}
 		return ResultDTO.okOff();
 	}
 
