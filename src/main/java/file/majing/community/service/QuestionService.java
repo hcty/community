@@ -5,6 +5,7 @@ package file.majing.community.service;
 
 import file.majing.community.dto.PaginationDTO;
 import file.majing.community.dto.QuestionDTO;
+import file.majing.community.dto.QuestionQueryDTO;
 import file.majing.community.exception.CustomizeErrorCode;
 import file.majing.community.exception.CustomizeException;
 import file.majing.community.mapper.QuestionExtMapper;
@@ -36,10 +37,15 @@ import java.util.stream.Collectors;
 	 * @param: [page, size]
 	 * @return: file.majing.community.dto.PaginationDTO
 	 */
-	public PaginationDTO list(Integer page, Integer size) {
+	public PaginationDTO list(Integer page, Integer size,String search) {
+		if(StringUtils.hasLength(search)){
+			search = Arrays.stream(search.split(" ")).collect(Collectors.joining("|"));
+		}
 		PaginationDTO<QuestionDTO> pagination = new PaginationDTO<>();
 		QuestionExample questionExample = new QuestionExample();
-		Integer totalCount = (int) questionMapper.countByExample(questionExample);
+		QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+		questionQueryDTO.setSearch(search);
+		Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 		Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
 		Integer offset = size * (page - 1);
 		if (page < 1) {
@@ -50,8 +56,10 @@ import java.util.stream.Collectors;
 		}
 		pagination.setPagination(totalPage, page);
 		questionExample.setOrderByClause("GMT_CREATE desc");
-		List<Question> questions = questionMapper
-				.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+		questionQueryDTO.setPage(offset);
+		questionQueryDTO.setSize(size);
+		List<Question> questions = questionExtMapper
+				.selectBySearch(questionQueryDTO);
 		List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 		QuestionDTO questionDTO = null;
 		User user = null;

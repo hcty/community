@@ -1,5 +1,6 @@
 package file.majing.community.mapper;
 
+import file.majing.community.dto.QuestionQueryDTO;
 import file.majing.community.model.Question;
 
 import java.util.List;
@@ -31,4 +32,8 @@ public interface QuestionExtMapper {
 	 * @return
 	 */
 	List<Question> selectRelated(Question question);
+
+	Integer countBySearch(QuestionQueryDTO questionQueryDTO);
+
+	List<Question> selectBySearch(QuestionQueryDTO questionQueryDTO);
 }

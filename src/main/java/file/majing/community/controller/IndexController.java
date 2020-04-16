@@ -17,9 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 	@Autowired private NotificationService notificationService;
 	@GetMapping("/") public String index(HttpServletRequest request, Model model,
 			@RequestParam(name = "page", defaultValue = "1") Integer page,
-			@RequestParam(name = "size", defaultValue = "4") Integer size) {
-		PaginationDTO pagination = questionService.list(page, size);
+			@RequestParam(name = "size", defaultValue = "4") Integer size,
+			@RequestParam(name = "search", required = false) String search) {
+		PaginationDTO pagination = questionService.list(page, size,search);
 		model.addAttribute("pagination", pagination);
+		model.addAttribute("search", search);
 		User user = (User) request.getSession().getAttribute("user");
 		if (user != null) {
 			Long unreadCount=notificationService.unreadCount(user.getId());//将未读消息数放到session中
