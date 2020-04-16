@@ -7,7 +7,8 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">码匠社区</span>
                 </button>
                 <a class="navbar-brand" href="/">码匠社区</a>
@@ -28,7 +29,8 @@
                         <a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a>
                     </li>
                     <li class="dropdown" th:if="${session.user != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
                             <span th:text="${session.user.getName()}"></span>
                             <span class="caret"></span>
                         </a>
@@ -38,7 +40,9 @@
                             <li><a href="/logout">退出登录</a></li>
                         </ul>
                     </li>
-                    <li th:unless="not ${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=dcf0854013085140d0d4&redirect_uri=http://localhost:8888/callback&scope=user&state=1">GitHub 登录</a></li>
+                    <li th:unless="not ${session.user == null}"><a
+                            href="https://github.com/login/oauth/authorize?client_id=dcf0854013085140d0d4&redirect_uri=http://localhost:8888/callback&scope=user&state=1">GitHub
+                        登录</a></li>
                     <!--<li th:unless="not ${session.user == null}"><a href="http://openapi.baidu.com/oauth/2.0/authorize?client_id=kThzkWhPgYl6TW251CSg5zSA&response_type=code&redirect_uri=http://localhost:8887/bdcallback&display=popup&state=1">百度登录</a></li>-->
                 </ul>
             </div>

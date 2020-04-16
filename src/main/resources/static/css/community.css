@@ -127,3 +127,8 @@ body {
 .tag-label{
     margin-right: 10px;
 }
+
+.footer-div{
+    padding: 10px 25%;
+    color: #0000cc;
+}
